@@ -1,9 +1,18 @@
 package com.example.chatbotapp;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +27,7 @@ import com.scaledrone.lib.Scaledrone;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements RoomListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String channelID = "CHANNEL_ID_FROM_YOUR_SCALEDRONE_DASHBOARD";
     private String roomName = "observable-room";
@@ -26,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
     private Scaledrone scaledrone;
     private MessageAdapter messageAdapter;
     private ListView messagesView;
+    private Dialog tabledlg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
             public void onOpen() {
                 System.out.println("Scaledrone connection open");
                 // Since the MainActivity itself already implement RoomListener we can pass it as a target
-                scaledrone.subscribe(roomName, MainActivity.this);
+                //scaledrone.subscribe(roomName, MainActivity.this);
             }
 
             @Override
@@ -64,39 +74,71 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
                 System.err.println(reason);
             }
         });
-    }
 
-    // Successfully connected to Scaledrone room
-    @Override
-    public void onOpen(Room room) {
-        System.out.println("Conneted to room");
-    }
+        String startMsg = "안녕하세요 무엇이든 물어봇!\n\n<도움말>\n말풍선을 누르면 도움을 얻을 수 있어요";
+        com.example.chatbotapp.Message msg = new com.example.chatbotapp.Message(startMsg, new MemberData("무엇이든물어봇", null), false);
+        messageAdapter.add(msg);
+        messagesView.setSelection(messagesView.getCount() - 1);
+        editText.getText().clear();
 
-    // Connecting to Scaledrone room failed
-    @Override
-    public void onOpenFailure(Room room, Exception ex) {
-        System.err.println(ex);
-    }
+        // 표 다이얼로그 초기화
+        tabledlg = new Dialog(MainActivity.this);
+        tabledlg.setContentView(R.layout.table_view);
 
-    // Received a message from Scaledrone room
-    @Override
-    public void onMessage(Room room, com.scaledrone.lib.Message receivedMessage) {
-        final ObjectMapper mapper = new ObjectMapper();
-        try {
-            final MemberData data = mapper.treeToValue(receivedMessage.getMember().getClientData(), MemberData.class);
-            boolean belongsToCurrentUser = receivedMessage.getClientID().equals(scaledrone.getClientID());
-            final com.example.chatbotapp.Message message = new com.example.chatbotapp.Message(receivedMessage.getData().asText(), data, belongsToCurrentUser);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    messageAdapter.add(message);
-                    messagesView.setSelection(messagesView.getCount() - 1);
-                }
-            });
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        // 표 동적 추가 해보자
+        TableLayout tableLayout = (TableLayout)findViewById(R.id.tableLayout);
+        TableRow row = (TableRow)findViewById(R.id.table_row);
+
+        //row.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        for(int i = 0;i<5;i++){
+            TextView text = new TextView(MainActivity.this);
+            text.setText(String.valueOf(i));
+            text.setGravity(Gravity.CENTER);
+            //row.addView(text);
         }
+        //tableLayout.addView(row);
+
+
+        messagesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                tabledlg.show();
+            }
+        });
     }
+
+//    // Successfully connected to Scaledrone room
+//    @Override
+//    public void onOpen(Room room) {
+//        System.out.println("Conneted to room");
+//    }
+//
+//    // Connecting to Scaledrone room failed
+//    @Override
+//    public void onOpenFailure(Room room, Exception ex) {
+//        System.err.println(ex);
+//    }
+//
+//    // Received a message from Scaledrone room
+//    @Override
+//    public void onMessage(Room room, com.scaledrone.lib.Message receivedMessage) {
+//        final ObjectMapper mapper = new ObjectMapper();
+//        try {
+//            final MemberData data = mapper.treeToValue(receivedMessage.getMember().getClientData(), MemberData.class);
+//            boolean belongsToCurrentUser = receivedMessage.getClientID().equals(scaledrone.getClientID());
+//            final com.example.chatbotapp.Message message = new com.example.chatbotapp.Message(receivedMessage.getData().asText(), data, belongsToCurrentUser);
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    messageAdapter.add(message);
+//                    messagesView.setSelection(messagesView.getCount() - 1);
+//                }
+//            });
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private String getRandomName() {
         String[] adjs = {"autumn", "hidden", "bitter", "misty", "silent", "empty", "dry", "dark", "summer", "icy", "delicate", "quiet", "white", "cool", "spring", "winter", "patient", "twilight", "dawn", "crimson", "wispy", "weathered", "blue", "billowing", "broken", "cold", "damp", "falling", "frosty", "green", "long", "late", "lingering", "bold", "little", "morning", "muddy", "old", "red", "rough", "still", "small", "sparkling", "throbbing", "shy", "wandering", "withered", "wild", "black", "young", "holy", "solitary", "fragrant", "aged", "snowy", "proud", "floral", "restless", "divine", "polished", "ancient", "purple", "lively", "nameless"};
@@ -120,12 +162,17 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
     public void sendMessage(View view) {
         String message = editText.getText().toString();
         if (message.length() > 0) {
-            com.example.chatbotapp.Message msg = new com.example.chatbotapp.Message(message, false);
+            com.example.chatbotapp.Message msg = new com.example.chatbotapp.Message(message, new MemberData("병신", null), false);
             messageAdapter.add(msg);
             messagesView.setSelection(messagesView.getCount() - 1);
-            scaledrone.publish("observable-room", message);
+            //scaledrone.publish("observable-room", message);
             editText.getText().clear();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
 

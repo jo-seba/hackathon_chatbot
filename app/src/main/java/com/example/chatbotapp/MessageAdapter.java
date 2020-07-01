@@ -35,7 +35,7 @@ public class MessageAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public Message getItem(int i) {
         return messages.get(i);
     }
 
@@ -62,7 +62,7 @@ public class MessageAdapter extends BaseAdapter {
             holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
             convertView.setTag(holder);
 
-            //holder.name.setText(message.getMemberData().getName());
+            holder.name.setText(message.getMemberData().getName());
             holder.messageBody.setText(message.getText());
             //GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
             //drawable.setColor(Color.parseColor(message.getMemberData().getColor()));
