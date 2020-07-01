@@ -1,0 +1,12 @@
+{
+  "name": "chatbotAPP",
+  "displayName": "chatbotAPP",
+  "expo": {
+    "name": "chatbotAPP",
+    "slug": "chatbotAPP",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
