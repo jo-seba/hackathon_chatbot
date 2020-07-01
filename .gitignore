@@ -1,0 +1,13 @@
+# Directoris
+lightning_logs/
+model_chp/
+Chatbot_data/
+__pycache__/
+.ipynb_checkpoints/
+
+# wieghts
+*.params
+
+# Files
+*.csv
+*.ipynb
