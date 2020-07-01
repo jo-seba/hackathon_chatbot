@@ -4,6 +4,7 @@ import { GiftedChat, SystemMessage } from 'react-native-gifted-chat'
 
 export default function App() {
   var idCount = 1;
+  var convertText;
   const [messages, setMessages] = useState([]);
   
   useEffect(() => {
@@ -23,15 +24,20 @@ export default function App() {
 
   const onSend = useCallback((messages = []) => {
     setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+    convertText = JSON.stringify(messages,['text']);
+    convertText = convertText.replace('[{"text":"','');
+    convertText = convertText.replace('"}]','');
+    alert(convertText);
+    
     onReceive('응 나도 몰라')
   }, [])
   
-  const onReceive = useCallback(textt => {
+  const onReceive = useCallback(text => {
     idCount = idCount + 1,
     setMessages(previousMessages => GiftedChat.append(previousMessages, [
       {
         _id: idCount,
-        text: textt,
+        text: text,
         createdAt: new Date(),
         user: {
           _id: 2,
