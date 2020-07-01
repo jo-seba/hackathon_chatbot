@@ -8,7 +8,7 @@ export default function App() {
     setMessages([
       {
         _id: 1,
-        text: '안녕 세종',
+        text: '안녕 세종 ttt',
         createdAt: new Date(),
         user: {
           _id: 2,
