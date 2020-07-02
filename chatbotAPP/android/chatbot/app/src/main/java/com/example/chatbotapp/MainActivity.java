@@ -149,6 +149,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }.start();
         System.out.println("After!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+
+
+        new Thread() {
+            public void run() {
+                try {
+                    CrossSocket socket = new CrossSocket();
+                    socket.connect();
+                    socket.run();
+                    socket.sendQuestion("1학년 중핵필수 얼마나 들어야돼?");
+                    socket.sendQuestion("bye");
+                    sleep(4000);
+                    socket.disconnect();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
 //    // Successfully connected to Scaledrone room
