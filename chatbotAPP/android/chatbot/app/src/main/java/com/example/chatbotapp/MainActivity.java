@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        System.out.println("before!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        new ChatRequest(2017, "hello", "hello", "hello").doInBackground("http://jonathan97son.iptime.org:8080/");
+        System.out.println("After!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
         // 값 받기
         Intent intent = getIntent();
         studentName = intent.getExtras().getString("name");
