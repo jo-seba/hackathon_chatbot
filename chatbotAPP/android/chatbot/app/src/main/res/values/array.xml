@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="단과대학">
+        <item>인문과학대학</item>
+        <item>사회과학대학</item>
+        <item>경영경제대학</item>
+        <item>호텔관광대학</item>
+        <item>자연과학대학</item>
+        <item>생명과학대학</item>
+        <item>전자정보공학대학</item>
+        <item>소프트웨어융합대학</item>
+        <item>공과대학</item>
+        <item>예체능대학</item>
+        <item>대양휴머니티칼리지</item>
+        <item>법학부</item>
+    </string-array>
+
+
+
+</resources>
