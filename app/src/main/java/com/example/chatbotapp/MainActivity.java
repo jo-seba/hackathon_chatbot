@@ -96,18 +96,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tabledlg.setContentView(R.layout.table_view);
 
         // 표 동적 추가 해보자
-        TableLayout tableLayout = (TableLayout)findViewById(R.id.tableLayout);
-        TableRow row = (TableRow)findViewById(R.id.table_row);
+        // TableLayout tableLayout = (TableLayout)findViewById(R.id.tableLayout);
+        // TableRow row = (TableRow)findViewById(R.id.table_row);
+        TableLayout tableLayout = new TableLayout(this);
+        tableLayout.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
-        //row.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        TableRow row = new TableRow(this);
+        row.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
-        for(int i = 0;i<5;i++){
-            TextView text = new TextView(MainActivity.this);
-            text.setText(String.valueOf(i));
-            text.setGravity(Gravity.CENTER);
-            //row.addView(text);
-        }
-        //tableLayout.addView(row);
+        TextView text = new TextView(MainActivity.this);
+        text.setText("전필");
+        text.setWidth(1000/4);
+        text.setGravity(Gravity.CENTER);
+        TextView text2 = new TextView(MainActivity.this);
+        text2.setText("전선");
+        text2.setWidth(1000/4);
+        text2.setGravity(Gravity.CENTER);
+        TextView text3 = new TextView(MainActivity.this);
+        text3.setText("중필");
+        text3.setWidth(1000/4);
+        text3.setGravity(Gravity.CENTER);
+        TextView text4 = new TextView(MainActivity.this);
+        text4.setText("중선");
+        text4.setWidth(1000/4);
+        text4.setGravity(Gravity.CENTER);
+
+        row.addView(text);
+        row.addView(text2);
+        row.addView(text3);
+        row.addView(text4);
+
+        tableLayout.addView(row);
+
+        tabledlg.addContentView(tableLayout, new TableRow.LayoutParams( TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
 
 
