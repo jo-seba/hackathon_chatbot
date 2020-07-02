@@ -2,6 +2,7 @@ package com.example.chatbotapp;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -25,6 +26,8 @@ import com.scaledrone.lib.Room;
 import com.scaledrone.lib.RoomListener;
 import com.scaledrone.lib.Scaledrone;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -36,11 +39,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MessageAdapter messageAdapter;
     private ListView messagesView;
     private Dialog tabledlg;
+    private String studentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // 값 받기
+        Intent intent = getIntent();
+        studentName = intent.getExtras().getString("name");
+
+
         // This is where we write the mesage
         editText = (EditText) findViewById(R.id.editText);
 
@@ -75,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        String startMsg = "안녕하세요 무엇이든 물어봇!\n\n<도움말>\n말풍선을 누르면 도움을 얻을 수 있어요";
+        String startMsg = "안녕하세요 " + studentName + "님 " + "무엇이든 물어봇!\n\n<도움말>\n말풍선을 누르면 도움을 얻을 수 있어요";
         com.example.chatbotapp.Message msg = new com.example.chatbotapp.Message(startMsg, new MemberData("무엇이든물어봇", null), false);
         messageAdapter.add(msg);
         messagesView.setSelection(messagesView.getCount() - 1);
@@ -98,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //row.addView(text);
         }
         //tableLayout.addView(row);
+
+
 
 
         messagesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
