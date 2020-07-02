@@ -39,11 +39,10 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         # json data
         json_data = json.loads(ubody)
         print(json_data)
-        print(json_data['id'])
         
         # ordinary data
-        params = parse_qs(ubody)
-        print(params)
+        #params = parse_qs(ubody)
+        #print(params)
         
         self.send_response(200)
         self.end_headers()
@@ -54,7 +53,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(response.getvalue())
 
 def main():
-    IP = 'localhost'
+    IP = '192.168.0.6'
     PORT = 8080
     httpApp = HTTPServer((IP, PORT), SimpleHTTPRequestHandler)
     print(f'Server running on http://{IP}:{PORT}/')

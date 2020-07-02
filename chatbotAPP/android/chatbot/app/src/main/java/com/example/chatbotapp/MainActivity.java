@@ -1,5 +1,6 @@
 package com.example.chatbotapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -41,14 +42,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Dialog tabledlg;
     private String studentName;
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        System.out.println("before!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        new ChatRequest(2017, "hello", "hello", "hello").doInBackground("http://jonathan97son.iptime.org:8080/");
-        System.out.println("After!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
         // 값 받기
         Intent intent = getIntent();
         studentName = intent.getExtras().getString("name");
@@ -139,6 +138,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tabledlg.show();
             }
         });
+
+        System.out.println("before!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+
+        new Thread() {
+            public void run() {
+                ChatRequest chat = new ChatRequest();
+                chat.doInBackground("http://jonathan97son.iptime.org:8080/");
+            }
+        }.start();
+        System.out.println("After!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
     }
 
 //    // Successfully connected to Scaledrone room
