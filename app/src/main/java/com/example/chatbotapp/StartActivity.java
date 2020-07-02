@@ -48,6 +48,15 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
+        Button manageBtn = (Button)findViewById(R.id.manageBtn);
+        manageBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // 텍스트뷰
         studentIDText = (TextView)findViewById(R.id.student_id_text);
         studentNameText = (TextView)findViewById(R.id.student_name_text);
