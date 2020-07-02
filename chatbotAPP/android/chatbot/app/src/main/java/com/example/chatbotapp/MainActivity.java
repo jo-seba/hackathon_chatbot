@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void sendMessage(View view) {
         String message = editText.getText().toString();
         if (message.length() > 0) {
-            com.example.chatbotapp.Message msg = new com.example.chatbotapp.Message(message, new MemberData("병신", null), false);
+            com.example.chatbotapp.Message msg = new com.example.chatbotapp.Message(message, new MemberData("병신", null), true);
             messageAdapter.add(msg);
             messagesView.setSelection(messagesView.getCount() - 1);
             //scaledrone.publish("observable-room", message);
